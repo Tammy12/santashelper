@@ -1,8 +1,15 @@
 ﻿<section>
-    <h3 data-bind="text: displayName"></h3>
-    <table class="table table-hover">
-        <tbody data-bind="foreach: wishes">
-            <tr><td data-bind="text: $data"></td></tr>
-        </tbody>
-    </table>
+    <div class="col-sm-6 col-sm-offset-3">
+        <h3 data-bind="text: displayName" class="wishtitle"></h3>
+        <table class="table table-hover">
+            <tbody data-bind="foreach: wishes">
+                <tr data-bind="event: ">
+                    <td data-bind="text: $data" class="wishitem"></td>
+                    <td class="wishitem" data-bind="visible: ">
+                        <i class="fa fa-times-circle"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
 </section>
