@@ -10,7 +10,8 @@
             router.map([
                 { route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
                 { route: 'flickr', moduleId: 'viewmodels/flickr', nav: true },
-                { route: 'mylist', moduleId: 'viewmodels/mylist', nav: true}
+                { route: 'mylist', moduleId: 'viewmodels/mylist', nav: true },
+                { route: 'friends', moduleId: 'viewmodels/friends', nav: true }
             ]).buildNavigationModel();
             
             return router.activate();
