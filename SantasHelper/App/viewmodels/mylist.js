@@ -2,10 +2,6 @@
     var vm = {
         displayName: 'My Wish List',
         newWish: ko.observable(''),
-        //wishes: [{ name: 'Toaster Oven', hover: true }, { name: 'Old Socks', hover: false }, { name: 'A Pony', hover: true }]
-        //showExit: ko.observableArray(["blah", "bop", "boo"]),
-        //wishes: [{ name: 'Toaster Oven', hover: showExit()[0] }, { name: 'Old Socks', hover: ko.observable("bop") }, { name: 'A Pony', hover: ko.observable("boo") }]
-        //showExit: ko.observableArray(["blah", "bop", "cat"])
         wishes: ko.observableArray([]),
         newRow: function(title) {
             this.name = title;
