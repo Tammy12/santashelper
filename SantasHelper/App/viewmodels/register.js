@@ -17,6 +17,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function(){
                     debugger;
+                    window.location.href = "#mylist";
                 },
                 error: function(){
                     debugger;

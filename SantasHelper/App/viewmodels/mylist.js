@@ -8,17 +8,57 @@
             this.hover = ko.observable(false);
         },
         addWish: function () {
+            debugger;
+            var self = this;
+
+            //update mysql database
+            $.ajax({
+                type: "GET",
+                url: "/MyList/AddNewWish",
+                data: { item: self.newWish() },
+                datatype: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    debugger;
+                },
+                error: function () {
+                    debugger;
+                }
+
+            });
+
+            //next update ui
             //this.newWish is by ref, this.newWish() is by val
-            var row = new this.newRow(this.newWish());
-            this.wishes.push(row);
+            var row = new self.newRow(self.newWish());
+            self.wishes.push(row);
             $('#addWishModal').modal('hide');
-            this.newWish('');
+            self.newWish('');            
         },
         showDelete: function (row) {
             row.hover(true);
         },
         hideDelete: function (row) {
             row.hover(false);
+        },
+        activate: function () {
+            var self = this;
+            $.ajax({
+                type: "GET",
+                url: "/MyList/GetWishlist",
+                datatype: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    debugger;
+                    self.wishes([]);
+                    for (var i = 0; i < data.length; i++) {
+                        self.wishes.push(data[i]);
+                    }
+                },
+                error: function () {
+                    debugger;
+                }
+
+            });
         }
     };
     return vm;
