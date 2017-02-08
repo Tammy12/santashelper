@@ -4,7 +4,8 @@
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
         'transitions': '../Scripts/durandal/transitions',
-        'bootstrap':'../Scripts/bootstrap'
+        'bootstrap': '../Scripts/bootstrap',
+        'service': '../App/service'
     }
 });
 

@@ -1,24 +1,53 @@
 ﻿<section>
     <div class="col-sm-6 col-sm-offset-3">
-        <h3 class="wishtitle">Create New Account</h3>
-        <form data-bind="submit: registerNewUser">
-            <div class="form-group">
-                <label for="firstname">First Name:</label>
-                <input class="form-control" id="firstname" data-bind="value: firstname" placeholder="Enter first name" />
-            </div>
-            <div class="form-group">
-                <label for="lastname">Last Name:</label>
-                <input class="form-control" id="lastname" data-bind="value: lastname" placeholder="Enter last name" />
-            </div>
+        <h3 class="wishtitle">Login</h3>
+        <form data-bind="submit: loginUser">
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input class="form-control" id="email" data-bind="value: email" placeholder="Enter email address" />
+                <input class="form-control" id="email" data-bind="value: email" placeholder="Enter email" />
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input class="form-control" id="password" data-bind="value: password" placeholder="Create password" />
-            </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+                <input class="form-control" id="password" data-bind="value: password" placeholder="Enter password" />
+            </div>           
+            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="button" class="btn btn-link pull-right" data-toggle="modal" data-target="#registerModal">Create New Account</button>
         </form>
+
+
+        <!-- Modal -->
+        <div class="modal" id="registerModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create New Account</h4>
+                    </div>
+                    <form data-bind="submit: registerNewUser">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="firstname">First Name:</label>
+                                <input class="form-control" id="firstname" data-bind="value: firstname" placeholder="Enter first name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname">Last Name:</label>
+                                <input class="form-control" id="lastname" data-bind="value: lastname" placeholder="Enter last name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input class="form-control" id="email" data-bind="value: email" placeholder="Enter email address" />
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input class="form-control" id="password" data-bind="value: password" placeholder="Create password" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
 </section>

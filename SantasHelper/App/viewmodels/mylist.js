@@ -27,7 +27,7 @@
 
             });
 
-            //next update ui
+            //update UI
             //this.newWish is by ref, this.newWish() is by val
             var row = new self.newRow(self.newWish());
             self.wishes.push(row);
@@ -51,7 +51,8 @@
                     debugger;
                     self.wishes([]);
                     for (var i = 0; i < data.length; i++) {
-                        self.wishes.push(data[i]);
+                        var row = new self.newRow(data[i]);
+                        self.wishes.push(row);
                     }
                 },
                 error: function () {
