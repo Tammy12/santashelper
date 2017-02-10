@@ -145,6 +145,7 @@
     <Content Include="App\main.js" />
     <Content Include="App\service\shared.js" />
     <Content Include="App\viewmodels\flickr.js" />
+    <Content Include="App\viewmodels\friendlist.js" />
     <Content Include="App\viewmodels\friends.js" />
     <Content Include="App\viewmodels\mylist.js" />
     <Content Include="App\viewmodels\register.js" />
@@ -152,6 +153,7 @@
     <Content Include="App\viewmodels\welcome.js" />
     <Content Include="App\views\detail.html" />
     <Content Include="App\views\flickr.html" />
+    <Content Include="App\views\friendlist.html" />
     <Content Include="App\views\friends.html" />
     <Content Include="App\views\mylist.html" />
     <Content Include="App\views\register.html" />
@@ -169,6 +171,8 @@
     <Content Include="Content\images\ios-startup-image-landscape.png" />
     <Content Include="Content\images\ios-startup-image-portrait.png" />
     <Content Include="Content\starterkit.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -183,6 +187,8 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\almond-custom.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -210,6 +216,8 @@
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\text.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Durandal\_splash.cshtml" />
     <Content Include="Views\Durandal\Index.cshtml" />
@@ -219,6 +227,7 @@
     <Compile Include="App_Start\DurandalConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DurandalController.cs" />
+    <Compile Include="Controllers\FriendsController.cs" />
     <Compile Include="Controllers\MyListController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Global.asax.cs">
@@ -243,6 +252,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Friends\" />
     <Folder Include="Views\MyList\" />
     <Folder Include="Views\Register\" />
   </ItemGroup>

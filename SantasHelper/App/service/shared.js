@@ -1,6 +1,6 @@
 ﻿define([], function () {
     var shared = {
-        currentUserId: "yos"
+        currentUserId: null
     };
 
     return shared;

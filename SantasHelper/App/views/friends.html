@@ -2,8 +2,12 @@
     <div class="col-sm-6 col-sm-offset-3">
         <table class="table table-hover">
             <tbody data-bind="foreach: friends">
-                <tr>
-                    <td data-bind="text: $data" class="wishitem"></td>
+                <tr data-bind="event: {mouseover: $parent.showSeeList, mouseout: $parent.hideSeeList}">
+                    <td data-bind="text: name" class="wishitem"></td>
+                    <td class="wishitem" style="font-style: italic; text-align: right;" data-bind="visible: hover">
+                        <!--<button type="button" class="btn btn-link">see list >></button>-->
+                        <a href="#" class="btn btn-link" data-bind="attr: { href: '#friendlist/' + id }">see list >></a>
+                    </td>
                 </tr>
             </tbody>
         </table>

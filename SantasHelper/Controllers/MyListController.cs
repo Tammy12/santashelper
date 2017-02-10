@@ -14,14 +14,13 @@ namespace SantasHelper.Controllers
         //{
         //    return View();
         //}
-        private int currentUserId = 3;
 
         /// <summary>
         /// Updates wishes table with new item from current user
         /// </summary>
         /// <param name="item">Name of the wish item</param>
         [HttpGet]
-        public void AddNewWish(string item)
+        public void AddNewWish(string item, int currentUserId)
         {
             string connectionString = "Server=localhost;Database=santashelper;Uid=root;Pwd=Ghmar01!;";
             using (MySqlConnection mysql = new MySqlConnection(connectionString))
@@ -49,7 +48,7 @@ namespace SantasHelper.Controllers
         /// Returns all items associated with current user from wishes table
         /// </summary>
         [HttpGet]
-        public JsonResult GetWishlist()
+        public JsonResult GetWishlist(int currentUserId)
         {
             List<string> wishes = new List<string>();
 

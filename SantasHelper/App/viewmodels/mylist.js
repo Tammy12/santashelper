@@ -1,5 +1,7 @@
-﻿define(['knockout'], function (ko) {
+﻿define(['service/shared'], function (shared) {//took out ko reference
     var vm = {
+        shared: shared,
+
         displayName: 'My Wish List',
         newWish: ko.observable(''),
         wishes: ko.observableArray([]),
@@ -15,7 +17,7 @@
             $.ajax({
                 type: "GET",
                 url: "/MyList/AddNewWish",
-                data: { item: self.newWish() },
+                data: { item: self.newWish(), currentUserId:  self.shared.currentUserId},
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",
                 success: function () {
@@ -45,6 +47,7 @@
             $.ajax({
                 type: "GET",
                 url: "/MyList/GetWishlist",
+                data: {currentUserId: self.shared.currentUserId},
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {

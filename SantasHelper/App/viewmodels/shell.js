@@ -12,7 +12,8 @@
                 //{ route: 'flickr', moduleId: 'viewmodels/flickr', nav: true },
                 {route: '', title: 'Register', moduleId: 'viewmodels/register', nave: true},
                 { route: 'mylist', moduleId: 'viewmodels/mylist', nav: true },
-                { route: 'friends', moduleId: 'viewmodels/friends', nav: true }
+                { route: 'friends', moduleId: 'viewmodels/friends', nav: true },
+                { route: 'friendlist', moduleId: 'viewmodels/friendlist', nav: true }
             ]).buildNavigationModel();
             
             return router.activate();
