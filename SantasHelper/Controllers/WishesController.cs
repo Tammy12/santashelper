@@ -86,30 +86,32 @@ namespace SantasHelper.Controllers
         }
 
         /// <summary>
-        /// Returns all items associated with current user from wishes table
+        /// Returns description of wish given wishid
         /// </summary>
         [HttpGet]
-        public JsonResult GetWishDescription(int currentUserId)
+        public JsonResult GetWishDescription(int wishid)
         {
-            List<int> wishIds = new List<int>();
-            List<string> wishNames = new List<string>();
-
+            string description;
             string connectionString = "Server=localhost;Database=santashelper;Uid=root;Pwd=Ghmar01!;";
             using (MySqlConnection mysql = new MySqlConnection(connectionString))
             {
-                MySqlCommand retrieveWishes = mysql.CreateCommand();
-                retrieveWishes.CommandText = "SELECT id, itemname FROM wishes WHERE userid = ?u";
-                retrieveWishes.Parameters.AddWithValue("?u", currentUserId);
+                MySqlCommand returnDescription = mysql.CreateCommand();
+                returnDescription.CommandText = "SELECT description FROM wishes WHERE id = ?i";
+                returnDescription.Parameters.AddWithValue("?i", wishid);
 
                 mysql.Open();
 
-                MySqlDataReader reader = retrieveWishes.ExecuteReader();
                 try
                 {
-                    while (reader.Read())
+                    //wish ids are unique, so can only return <= 1
+                    var result = returnDescription.ExecuteScalar();
+                    if (result != null)
                     {
-                        wishNames.Add(reader.GetString("itemname"));
-                        wishIds.Add(reader.GetInt32("id"));
+                        description = Convert.ToString(result);
+                    }
+                    else
+                    {
+                        description = null;
                     }
                 }
                 catch (MySqlException ex)
@@ -118,11 +120,45 @@ namespace SantasHelper.Controllers
                 }
                 finally
                 {
-                    reader.Close();
                     mysql.Close();
                 }
 
-                return Json(new { success = true, ids = wishIds, names = wishNames }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, description = description }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Updates selected wish 'claimed' to yes, claimedby current user
+        /// </summary>
+        /// <param name="wishid"></param>
+        /// <param name="currentUserId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult ClaimWish(int wishid, int currentUserId)
+        {
+            string connectionString = "Server=localhost;Database=santashelper;Uid=root;Pwd=Ghmar01!;";
+            using (MySqlConnection mysql = new MySqlConnection(connectionString))
+            {
+                MySqlCommand claim = mysql.CreateCommand();
+                claim.CommandText = "UPDATE wishes SET claimed = 'y', claimedby = ?cb WHERE id = ?i";
+                claim.Parameters.AddWithValue("?i", wishid);
+                claim.Parameters.AddWithValue("?cb", currentUserId);
+
+                mysql.Open();
+
+                try
+                {
+                    claim.ExecuteNonQuery();
+                    return Json(new { success = true, message = "Your claim was successful!" }, JsonRequestBehavior.AllowGet);
+                }
+                catch (MySqlException ex)
+                {
+                    return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    mysql.Close();
+                }
             }
         }
     }

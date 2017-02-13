@@ -70,20 +70,19 @@ namespace SantasHelper.Controllers
             using (MySqlConnection mysql = new MySqlConnection(connectionString))
             {
                 MySqlCommand getUser = mysql.CreateCommand();
-                getUser.CommandText = "SELECT * FROM users WHERE email = ?e and password = ?p";
+                getUser.CommandText = "SELECT id FROM users WHERE email = ?e and password = ?p";
                 getUser.Parameters.AddWithValue("?e", email);
                 getUser.Parameters.AddWithValue("?p", password);
 
                 mysql.Open();
 
-                MySqlDataReader reader = getUser.ExecuteReader();
                 try
                 {
                     //should only have one result max because email is unique in db
-                    reader.Read();
-                    if (reader.HasRows)
+                    var result = getUser.ExecuteScalar();
+                    if (result != null)
                     {
-                        currentUserId = reader.GetInt32("id");
+                        currentUserId = Convert.ToInt32(result);
                     }
                     else
                     {
@@ -96,7 +95,6 @@ namespace SantasHelper.Controllers
                 }
                 finally
                 {
-                    reader.Close();
                     mysql.Close();
                 }
 
@@ -148,19 +146,18 @@ namespace SantasHelper.Controllers
             getId.CommandText = "SELECT id FROM users WHERE email = ?e";
             getId.Parameters.AddWithValue("?e", email);
 
-            MySqlDataReader reader = getId.ExecuteReader();
             try
             {
                 //should only have one result max because email is unique in db
-                reader.Read();
-                if (reader.HasRows)
+                var result = getId.ExecuteScalar();
+                if (result != null)
                 {
-                    currentUserId = reader.GetInt32("id");
+                    currentUserId = Convert.ToInt32(result);
                 }
             }
-            finally
+            catch(MySqlException ex)
             {
-                reader.Close();
+
             }
 
             return currentUserId;

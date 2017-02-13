@@ -2,17 +2,10 @@
     <div class="col-sm-6 col-sm-offset-3">
         <table class="table table-hover">
             <tbody data-bind="foreach: wishes">
-                <!--<tr data-bind="event: {mouseover: $parent.showDetails, mouseout: $parent.hideDetails}">-->
-                <tr data-toggle="modal" data-target="#wishDetails" data-bind="click: $parent.selectRowModal($index())">
+                <!--the click needs to call a function wrapper, not method itself, or else method will fire automatically-->
+                <tr data-toggle="modal" data-target="#wishDetails" data-bind="click: function() { $parent.selectRowModal($index()); }">
                     <td data-bind="text: name" class="wishitem"></td>
-                    <!--<td class="wishitem" style="font-style: italic; text-align: right;" data-bind="visible: hover">details</td>
-                    <td class="wishitem" data-bind="visible: hover">
-                        <i class="fa fa-times-circle pull-right"></i>
-                    </td>-->
                 </tr>
-                <!--<tr>
-                    <td data-bind="text: $data" class="wishitem"></td>
-                </tr>-->
             </tbody>
         </table>
 
@@ -24,10 +17,9 @@
                         <h4 class="modal-title" data-bind="text: modalTitle"></h4>
                     </div>
                     <div class="modal-body">
-                        <h4>Some things</h4>
+                        <h5 data-bind="text: modalDescription"></h5>
                     </div>
                     <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-primary" data-bind="showDetails">Claim!</button>-->
                         <button type="button" class="btn btn-primary" data-bind="click: claimWish">Claim!</button>
                     </div>
                 </div>

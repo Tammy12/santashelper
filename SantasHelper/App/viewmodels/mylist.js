@@ -1,4 +1,4 @@
-﻿define(['service/shared'], function (shared) {//took out ko reference
+﻿define(['service/shared', "toastr"], function (shared, toast) {//took out ko reference
     var vm = {
         shared: shared,
 
