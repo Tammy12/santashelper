@@ -23,7 +23,7 @@
             var self = this;            
             $.ajax({
                 type: "GET",
-                url: "/Friends/GetFriendUsers",
+                url: "/Users/GetFriendUsers",
                 data: {currentUserId: self.shared.currentUserId},
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",

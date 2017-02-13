@@ -227,9 +227,8 @@
     <Compile Include="App_Start\DurandalConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DurandalController.cs" />
-    <Compile Include="Controllers\FriendsController.cs" />
-    <Compile Include="Controllers\MyListController.cs" />
-    <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WishesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

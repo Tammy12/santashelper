@@ -13,7 +13,7 @@
             $.ajax({
                 //using GET because POST causes 404/500 errors for some reason...?
                 type: "GET",
-                url: "/Register/LoginUser",
+                url: "/Users/LoginUser",
                 data: { email: self.email(), password: self.password() },
                 datatype: 'json',
                 //had to use context to reset definition of 'this' in callback for some reason
@@ -21,12 +21,12 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     debugger;
-                    if (data !== -1) {
-                        this.shared.currentUserId = data
+                    if (data.success) {
+                        this.shared.currentUserId = data.id;
                         window.location.href = "#mylist";
                     }
                     else {
-                        toast.error("Invalid login credentials.")
+                        toast.error(data.message);
                     }
                 },
                 error: function () {
@@ -41,16 +41,24 @@
             $.ajax({
                 //using GET because POST causes 404/500 errors for some reason...?
                 type: "GET",
-                url: "/Register/CreateNewUser",
+                url: "/Users/CreateNewUser",
                 data: { firstname: self.firstname(), lastname: self.lastname(), email: self.email(), password: self.password() },
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",
-                success: function(){
+                success: function(data){
                     debugger;
-                    $('#registerModal').modal('hide');
-                    window.location.href = "#mylist";
+                    if (data.success) {
+                        self.shared.currentUserId = data.id;
+                        $('#registerModal').modal('hide');
+                        window.location.href = "#mylist";
+                        toast.success(data.message);
+                    }
+                    else {
+                        toast.error(data.message);
+                    }
+                    
                 },
-                error: function(){
+                error: function(data){
                     debugger;
                 }
                

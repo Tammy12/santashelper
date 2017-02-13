@@ -13,7 +13,7 @@
                 {route: '', title: 'Register', moduleId: 'viewmodels/register', nave: true},
                 { route: 'mylist', moduleId: 'viewmodels/mylist', nav: true },
                 { route: 'friends', moduleId: 'viewmodels/friends', nav: true },
-                { route: 'friendlist', moduleId: 'viewmodels/friendlist', nav: true }
+                { route: 'friendlist/:id', moduleId: 'viewmodels/friendlist', nav: true }
             ]).buildNavigationModel();
             
             return router.activate();

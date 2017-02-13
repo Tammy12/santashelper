@@ -16,7 +16,7 @@
             //update mysql database
             $.ajax({
                 type: "GET",
-                url: "/MyList/AddNewWish",
+                url: "/Wishes/AddNewWish",
                 data: { item: self.newWish(), currentUserId:  self.shared.currentUserId},
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",
@@ -46,17 +46,23 @@
             var self = this;
             $.ajax({
                 type: "GET",
-                url: "/MyList/GetWishlist",
+                url: "/Wishes/GetWishlist",
                 data: {currentUserId: self.shared.currentUserId},
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     debugger;
                     self.wishes([]);
-                    for (var i = 0; i < data.length; i++) {
-                        var row = new self.newRow(data[i]);
-                        self.wishes.push(row);
+                    if (data.success) {
+                        for (var i = 0; i < data.names.length; i++) {
+                            var row = new self.newRow(data.names[i]);
+                            self.wishes.push(row);
+                        }
                     }
+                    else {
+                        toast.error(data.message);
+                    }
+                    
                 },
                 error: function () {
                     debugger;
