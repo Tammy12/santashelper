@@ -1,10 +1,16 @@
 ﻿<section>
+    <div>
+        <a href="#friends" style="font-style: italic;" class="btn btn-link"><< back</a>
+    </div>
     <div class="col-sm-6 col-sm-offset-3">
         <table class="table table-hover">
             <tbody data-bind="foreach: wishes">
                 <!--the click needs to call a function wrapper, not method itself, or else method will fire automatically-->
-                <tr data-toggle="modal" data-target="#wishDetails" data-bind="click: function() { $parent.selectRowModal($index()); }">
+                <tr data-toggle="modal" data-target="#wishDetails" data-bind="visible: !claim(), click: function() { $parent.selectRowModal($index()); }">
                     <td data-bind="text: name" class="wishitem"></td>
+                </tr>
+                <tr data-toggle="modal" data-target="#wishDetails" data-bind="visible: claim(), click: function() { $parent.selectRowModal($index()); }">
+                    <td class="wishitem"><s data-bind="text: name"></s></td>
                 </tr>
             </tbody>
         </table>
@@ -20,7 +26,7 @@
                         <h5 data-bind="text: modalDescription"></h5>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bind="click: claimWish">Claim!</button>
+                        <button type="button" class="btn btn-primary" data-bind="click: claimWish, enable: enableClaim">Claim!</button>
                     </div>
                 </div>
             </div>

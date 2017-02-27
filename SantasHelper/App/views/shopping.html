@@ -1,0 +1,30 @@
+﻿<section>
+    <div class="col-sm-6 col-sm-offset-3">
+        <h3 data-bind="text: displayName" class="wishtitle"></h3>
+        <table class="table table-hover">
+            <tbody data-bind="foreach: gifts">
+                <tr data-toggle="modal" data-target="#giftDetails" data-bind="click: $parent.modalRowIndex($index())">
+                    <td data-bind="text: friend" class="wishitem"></td>
+                    <td data-bind="text: wish" class="wishitem"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Modal -->
+        <div class="modal" id="giftDetails">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" data-bind="text: gifts()[modalRowIndex()].wish"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Gift for <span data-bind="text: gifts()[modalRowIndex()].friend"></span></h5>
+                        <h5>Would like <span data-bind="text: gifts()[modalRowIndex()].count"></span></h5>
+                        <h5 data-bind="text: gifts()[modalRowIndex()].description"></h5>
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

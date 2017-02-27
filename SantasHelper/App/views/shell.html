@@ -21,8 +21,8 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav" data-bind="foreach: router.navigationModel">
-                <li data-bind="css: { active: isActive }">
+            <ul class="nav navbar-nav" data-bind="visible: (currentRoute() != ''), foreach: router.navigationModel">
+                <li data-bind="css: { active: (isActive || (title == 'Friends' && $parent.currentRoute() == 'friendslist'))}">
                     <a data-bind="attr: { href: hash }, text: title"></a>
                 </li>
             </ul>
@@ -33,11 +33,12 @@
                 </li>
             </ul>
 
-            <form class="navbar-form navbar-right" role="search" data-bind="submit:search">
+            <button type="button" class="btn btn-default navbar-btn navbar-right" data-bind="click: logOut">Sign Out</button>
+            <!--<form class="navbar-form navbar-right" role="search" data-bind="submit:search">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search">
                 </div>
-            </form>
+            </form>-->
         </div>
     </nav>
 

@@ -4,37 +4,118 @@
 
         displayName: 'My Wish List',
         newWish: ko.observable(''),
+        newWishDescription: ko.observable(''),
+        newWishCount: ko.observable(1),
         wishes: ko.observableArray([]),
-        newRow: function(title) {
+        newRow: function (id, title, desc, count) {
+            this.id = id;
             this.name = title;
+            this.description = desc;
+            this.count = count;
             this.hover = ko.observable(false);
         },
-        addWish: function () {
+        modalItemId: ko.observable(null),
+        displayRowDetails: function () {
             debugger;
             var self = this;
+            var rowIndex = self.modalItemId();
+            self.newWish(self.wishes()[rowIndex].name);
+            self.newWishDescription(self.wishes()[rowIndex].description);
+            self.newWishCount(self.wishes()[rowIndex].count);
+        },
+
+        deleteWish: function (index) {
+            debugger;
+            var self = this;
+            $.ajax({
+                type: "GET",
+                url: "/Wishes/DeleteWish",
+                data: {itemId: self.wishes()[index].id},
+                datatype: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    debugger;
+                    if (data.success)
+                        self.activate();
+                   else toast.error(data.message);
+                },
+                error: function (data) {
+                    debugger;
+                }
+
+            });
+        },
+        editWish: function () {
+            debugger;
+            var self = this;
+            if (self.modalItemId() == null)
+                self.addNewWish();
+            else {
+                self.editExistingWish(self.wishes()[self.modalItemId()].id);
+            }
+        },
+        editExistingWish: function (itemId) {
+            var self = this;
+            var sendData = {
+                itemId: itemId,
+                itemName: self.newWish(),
+                itemDesc: self.newWishDescription(),
+                itemCount: self.newWishCount(),
+                currentUserId: self.shared.currentUserId
+            };
+            //update mysql database
+            $.ajax({
+                type: "GET",
+                url: "/Wishes/EditExistingWish",
+                data: sendData,
+                datatype: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    debugger;
+                    self.modalItemId(null);
+                    self.activate();
+                },
+                error: function () {
+                    debugger;
+                    self.modalItemId(null);
+                }
+
+            });
+
+            $('#addWishModal').modal('hide');
+        },
+        addNewWish: function () {
+            debugger;
+            var self = this;
+            var sendData = {
+                itemName: self.newWish(),
+                itemDesc: self.newWishDescription(),
+                itemCount: self.newWishCount(),
+                currentUserId: self.shared.currentUserId
+            };
 
             //update mysql database
             $.ajax({
                 type: "GET",
                 url: "/Wishes/AddNewWish",
-                data: { item: self.newWish(), currentUserId:  self.shared.currentUserId},
+                data: sendData,
                 datatype: 'json',
                 contentType: "application/json; charset=utf-8",
                 success: function () {
                     debugger;
+                    //update UI
+                    //this.newWish is by ref, this.newWish() is by val
+                    self.activate();
+                    $('#addWishModal').modal('hide');
+                    self.newWish('');
+                    self.newWishDescription('');
+                    self.newWishCount(1);
                 },
                 error: function () {
                     debugger;
                 }
 
-            });
-
-            //update UI
-            //this.newWish is by ref, this.newWish() is by val
-            var row = new self.newRow(self.newWish());
-            self.wishes.push(row);
-            $('#addWishModal').modal('hide');
-            self.newWish('');            
+            });                       
         },
         showDelete: function (row) {
             row.hover(true);
@@ -55,7 +136,7 @@
                     self.wishes([]);
                     if (data.success) {
                         for (var i = 0; i < data.names.length; i++) {
-                            var row = new self.newRow(data.names[i]);
+                            var row = new self.newRow(data.ids[i], data.names[i], data.descriptions[i], data.counts[i]);
                             self.wishes.push(row);
                         }
                     }

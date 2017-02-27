@@ -5,31 +5,41 @@
             <tbody data-bind="foreach: wishes">
                 <tr data-bind="event: {mouseover: $parent.showDelete, mouseout: $parent.hideDelete}">
                     <td data-bind="text: name" class="wishitem"></td>
-                    <td class="wishitem" style="font-style: italic; text-align: right;" data-bind="visible: hover">edit</td>
-                    <td class="wishitem" data-bind="visible: hover">
+                    <td class="wishitem" style="font-style: italic; text-align: right;" data-bind="visible: hover">
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#addWishModal" data-bind="click: function() {$parent.modalItemId($index()); $parent.displayRowDetails();}">edit</button>
+                    </td>
+                    <td class="wishitem" data-bind="visible: hover, click: function() {$parent.deleteWish($index()); }">
                         <i class="fa fa-times-circle pull-right"></i>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addWishModal">Add Item</button>
+        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addWishModal" data-bind="click: modalItemId(null)">Add Item</button>
 
         <!-- Modal -->
         <div class="modal" id="addWishModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Item</h4>
+                        <h4 class="modal-title">Edit Item</h4>
                     </div>
-                    <form data-bind="submit: addWish">
+                    <form data-bind="submit: editWish">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="inputWish">Enter Name of Item:</label>
+                                <label for="inputWish">Title:</label>
                                 <input class="form-control" id="inputWish" data-bind="value: newWish" placeholder="A pony..." />
+                            </div>
+                            <div class="form-group">
+                                <label for="inputDescription">Description:</label>
+                                <textarea class="form-control" id="inputDescription" data-bind="value: newWishDescription"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCount">Number of Items:</label>
+                                <input class="form-control" id="inputCount" data-bind="value: newWishCount"/>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Add to List</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
                     
