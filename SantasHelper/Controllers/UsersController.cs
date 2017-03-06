@@ -1,8 +1,11 @@
 ﻿using MySql.Data.MySqlClient;
+using SantasHelper.Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Mvc;
 
 namespace SantasHelper.Controllers
@@ -65,19 +68,32 @@ namespace SantasHelper.Controllers
         public JsonResult LoginUser(string email, string password)
         {
             int currentUserId = -1;
+            byte[] encodedPassword = Encoding.UTF8.GetBytes(password);
 
             string connectionString = "Server=localhost;Database=santashelper;Uid=root;Pwd=Ghmar01!;";
             using (MySqlConnection mysql = new MySqlConnection(connectionString))
             {
+                //query for salt given email
+                MySqlCommand getSalt = mysql.CreateCommand();
+                getSalt.CommandText = "SELECT salt FROM users WHERE email = ?e";
+                getSalt.Parameters.AddWithValue("?e", email);
+
+                //query for id given hashed(password + salt) and email
                 MySqlCommand getUser = mysql.CreateCommand();
                 getUser.CommandText = "SELECT id FROM users WHERE email = ?e and password = ?p";
                 getUser.Parameters.AddWithValue("?e", email);
-                getUser.Parameters.AddWithValue("?p", password);
 
                 mysql.Open();
 
                 try
                 {
+                    //return salt for that email
+                    var saltObj = getSalt.ExecuteScalar();
+
+                    //calculate the hashed(password + salt)
+                    byte[] hashedPassword = HashPassword.GenerateSaltedHash(encodedPassword, (byte[])saltObj);
+                    getUser.Parameters.AddWithValue("?p", hashedPassword);
+
                     //should only have one result max because email is unique in db
                     var result = getUser.ExecuteScalar();
                     if (result != null)
@@ -86,10 +102,10 @@ namespace SantasHelper.Controllers
                     }
                     else
                     {
-                        return Json(new { success = false, message = "Error: Valid login missing id." }, JsonRequestBehavior.AllowGet);
+                        return Json(new { success = false, message = "Error: Invalid login credentials." }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                catch(MySqlException ex)
+                catch (MySqlException ex)
                 {
                     return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
                 }
@@ -107,16 +123,26 @@ namespace SantasHelper.Controllers
         public JsonResult CreateNewUser(string firstname, string lastname, string email, string password)
         {
             int currentUserId = -1;
+            byte[] encodedPassword = Encoding.UTF8.GetBytes(password);
+            byte[] salt = new byte[32];
+
+            //creates pseudo-random number
+            RandomNumberGenerator rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(salt);
+
+            //creates a 32-byte hash
+            byte[] hashedPassword = HashPassword.GenerateSaltedHash(encodedPassword, salt);
 
             string connectionString = "Server=localhost;Database=santashelper;Uid=root;Pwd=Ghmar01!;";
             using (MySqlConnection mysql = new MySqlConnection(connectionString))
             {
                 MySqlCommand createUser = mysql.CreateCommand();
-                createUser.CommandText = "INSERT INTO users (id, firstname, lastname, email, password) VALUES (NULL, ?f, ?l, ?e, ?p)";
+                createUser.CommandText = "INSERT INTO users (id, firstname, lastname, email, salt, password) VALUES (NULL, ?f, ?l, ?e, ?s, ?p)";
                 createUser.Parameters.AddWithValue("?f", firstname);
                 createUser.Parameters.AddWithValue("?l", lastname);
                 createUser.Parameters.AddWithValue("?e", email);
-                createUser.Parameters.AddWithValue("?p", password);
+                createUser.Parameters.AddWithValue("?s", salt);
+                createUser.Parameters.AddWithValue("?p", hashedPassword);
 
                 mysql.Open();
 

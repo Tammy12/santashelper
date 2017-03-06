@@ -15,6 +15,12 @@
             this.hover = ko.observable(false);
         },
         modalItemId: ko.observable(null),
+        resetNewWish: function () {
+            var self = this;
+            self.newWish('');
+            self.newWishDescription('');
+            self.newWishCount(1);
+        },
         displayRowDetails: function () {
             debugger;
             var self = this;
@@ -45,9 +51,26 @@
 
             });
         },
+        validateInput: function() {
+            debugger;
+            var self = this;
+            if (self.newWish() == null || self.newWish() == "") {
+                toast.warning("Your item is missing a title.");
+                return false;
+            }
+
+            if (self.newWishCount() == null || self.newWishCount() == "" || isNaN(parseInt(self.newWishCount(), 10)) || parseInt(self.newWishCount(), 10) < 1) {
+                toast.warning("Item count must be a positive integer.");
+                return false;
+            }
+        },
         editWish: function () {
             debugger;
             var self = this;
+            if (self.validateInput() == false) {
+                return;
+            }
+
             if (self.modalItemId() == null)
                 self.addNewWish();
             else {

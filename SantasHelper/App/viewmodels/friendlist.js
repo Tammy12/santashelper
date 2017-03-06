@@ -112,7 +112,7 @@
         self.enableClaim = ko.computed({
             read: function () {
                 debugger;
-                if (self.modalIndex() == null || self.wishes().length < self.modalIndex())
+                if (self.modalIndex() == null || self.wishes().length <= self.modalIndex())
                     return false;
 
 
